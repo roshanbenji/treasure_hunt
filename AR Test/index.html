@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mythic Treasure Hunt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h1>🏛️ Gate of Olympus</h1>
+            <p>Identify yourself, mortal.</p>
+            <input type="text" id="reg-input" placeholder="Register Number (e.g., 234123)">
+            <input type="text" id="name-input" placeholder="Your Name">
+            <button id="login-btn">Enter Olympus</button>
+            <p id="login-error" class="hidden">Please fill in all fields.</p>
+        </div>
+    </div>
+
+    <button id="fullscreen-btn" class="utility-btn">⛶</button>
+
+    <div id="rotate-warning">
+        <div class="icon">↻</div>
+        <h1>Please Rotate Your Device</h1>
+        <p>This ancient mystery is best viewed in Landscape Mode.</p>
+    </div>
+
+    <div id="game-container">
+        
+        <div id="scene-stage">
+            <img id="character-image-left" src="" alt="Player God" class="hidden"> 
+            <img id="character-image-right" src="" alt="NPC God" class="hidden">
+        </div>
+        
+        <div id="dialogue-box">
+            
+            <p id="dialogue-text">Welcome, traveler! Choose your divine guide...</p>
+            
+            <div id="character-selection" class="button-container">
+                <button id="select-zeus">Zeus</button>
+                <button id="select-poseidon">Poseidon</button>
+            </div>
+            
+            <div id="challenge-area" class="hidden">
+                <input type="text" id="answer-input" placeholder="Type your answer here...">
+                <button id="submit-answer-btn">Submit</button>
+                <button id="hint-btn" class="hidden">Hint 💡 (2)</button>
+            </div>
+            
+            <button id="next-clue-btn" class="hidden">Continue</button>
+            
+        </div>
+    </div>
+
+    <script src="main.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #333;
+}
+
+/* =========================================
+   LOGIN SCREEN
+   ========================================= */
+#login-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #111;
+    /* Optional: Add a subtle background image here if you want */
+    z-index: 9000; /* Sit on top of everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background: rgba(30, 30, 30, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid #FFC107; /* Gold Border */
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.2);
+    color: white;
+    width: 300px;
+}
+
+.login-box h1 { margin-top: 0; color: #FFC107; font-size: 1.5em; }
+.login-box p { color: #ccc; margin-bottom: 20px; }
+
+.login-box input {
+    display: block;
+    width: 100%;
+    margin: 15px 0;
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
+    font-size: 1em;
+}
+
+.login-box button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #FFC107;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.login-box button:hover { background-color: #FFD54F; }
+
+#login-error { color: #ff6b6b; font-size: 0.9em; margin-top: 15px; }
+
+/* =========================================
+   ROTATION WARNING
+   ========================================= */
+#rotate-warning {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #1a1a1a;
+    color: white;
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#rotate-warning .icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: rotate-anim 2s infinite ease-in-out;
+}
+
+#rotate-warning h1 { margin: 0 0 10px 0; font-size: 24px; }
+#rotate-warning p { color: #aaa; }
+
+@keyframes rotate-anim {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(90deg); }
+    100% { transform: rotate(90deg); }
+}
+
+/* =========================================
+   GAME CONTAINER
+   ========================================= */
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("Images/ground_temp.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-end; 
+}
+
+/* --- SCENE STAGE --- */
+#scene-stage {
+    position: static; 
+    height: 100vh; 
+    width: 100%;
+    padding: 0; 
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between; 
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Single Mode Logic */
+#scene-stage.single-mode {
+    justify-content: flex-start; 
+}
+
+#scene-stage.single-mode #character-image-left {
+    margin-left: 5%; 
+    margin-right: auto;
+}
+
+/* --- IMAGES --- */
+#character-image-left, #character-image-right {
+    height: auto;
+    max-height: 75vh; 
+    width: auto;
+    max-width: 40%; 
+    object-fit: contain;
+    transition: all 0.3s ease-out; 
+}
+
+#character-image-left { order: 1; margin-right: auto; margin-left: 0; }
+#character-image-right { order: 3; margin-left: auto; margin-right: 0; }
+
+.dimmed {
+    opacity: 0.4;
+    transform: scale(0.95) translateY(10px);
+    filter: grayscale(70%) brightness(0.7);
+}
+
+.switching {
+    opacity: 0 !important; 
+    transform: scale(0.95) !important; 
+    transition: all 0.2s ease-out !important; 
+}
+
+/* --- DIALOGUE BOX --- */
+#dialogue-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto; 
+    
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white;
+    
+    padding: 15px 50px 25px 50px; 
+    box-sizing: border-box;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 30;
+    
+    /* Transparent Borders for smooth color switching */
+    border-top: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-left: 10px solid transparent; 
+    border-right: 10px solid transparent;
+    
+    border-radius: 0 0 30px 30px;
+    overflow: visible; 
+    transition: border-color 0.3s ease;
+}
+
+/* Speaker Colors */
+#dialogue-box.speak-left { 
+    border-left-color: #4CAF50; 
+    border-right-color: transparent; 
+}
+
+#dialogue-box.speak-right { 
+    border-right-color: #FF5722; 
+    border-left-color: transparent; 
+}
+
+#dialogue-text { 
+    font-size: 1.2em; 
+    margin: 0; 
+    line-height: 1.4; 
+    max-width: 800px;
+}
+
+/* --- FLOATING ACTION BAR --- */
+.button-container, 
+#challenge-area, 
+#next-clue-btn {
+    position: absolute;
+    bottom: 0; 
+    left: 50%;
+    transform: translate(-50%, 50%);
+    z-index: 31;
+    margin: 0; 
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    width: auto;
+}
+
+#challenge-area {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    z-index: 31;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Spacing between Input, Submit, and Hint */
+    
+    width: auto;
+    max-width: 95%; /* Allow it to use almost full width on phone */
+    background: transparent;
+}
+
+button { 
+    padding: 8px 30px; 
+    font-size: 1.1em; 
+    cursor: pointer; 
+    border: none; 
+    border-radius: 25px; 
+    background-color: #4CAF50; 
+    color: white; 
+    font-weight: bold; 
+    transition: 0.2s; 
+    pointer-events: auto; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border: 2px solid rgba(255,255,255,0.2);
+    white-space: nowrap;
+}
+
+button:hover { 
+    background-color: #45a049; 
+    transform: scale(1.05); 
+}
+
+input[type="text"] { 
+    padding: 8px 20px; 
+    width: 100%; 
+    border-radius: 25px; 
+    border: 2px solid #ccc; 
+    font-size: 1.1em; 
+    pointer-events: auto; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Hint Button */
+/* --- HINT BUTTON (Now in Bottom Bar) --- */
+#hint-btn {
+    /* Reset absolute positioning */
+    position: static; 
+    transform: none;
+    
+    background-color: #FFC107; 
+    color: #333; /* Dark text */
+    border: 2px solid #FFA000;
+    
+    /* Match the size of the other buttons */
+    padding: 10px 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 25px;
+    
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    white-space: nowrap;
+    
+    /* Ensure it behaves like a flex item */
+    display: inline-block;
+}
+
+#hint-btn:hover {
+    background-color: #FFD54F;
+    transform: scale(1.05);
+}
+
+#hint-btn:disabled {
+    background-color: #555;
+    color: #888;
+    border-color: #444;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Fullscreen Button */
+.utility-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.utility-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.hidden { display: none !important; }
+
+@media (orientation: portrait) {
+    #game-container { display: none; }
+    #rotate-warning { display: flex; }
+    .utility-btn { display: none; }
+}
